@@ -4,7 +4,7 @@
 - Construir os metodos de vizinhos e de embaralhamento.
 - Preencher uma imagem recursivamente aleatoriamente.
 - Preencher uma imagem recursivamente aleatoriamente mostrando o nivel da recursao.
-- Fazer o floodfill para preenche uma imagem.
+- Fazer o floodfill para preencher uma imagem.
 - Usar o floodfill para encontrar o menor caminho entre dois pontos.
 - Construir o labirinto usando pilha.
 - Construir o labirinto recursivamente.
@@ -30,60 +30,35 @@ Crie uma função auxiliar que embaralha um vetor de posicoes
 
 ## Atividades com labirinto.
 
-### Resolver um labirinto perfeito.
+### Atividade 1
 
-Na pasta de inputs existem arquivos de texto que contém labirintos perfeitos.
-Você deve ler o labirinto de entrada in e gerar o labirinto resolvido out.
+Você deve implmentar a criação do labirinto utilizando recursão.
 
-No arquivo de entrada você tem:
+	funcao furar(posicao, matriz):
+		se posicao esta fora da matriz:
+			return
+		se posicao eh furavel:
+			fure
+			chame furar aleatoriamente para todos os vizinhos
 
-    l c
-    matrix
-    li ci
-    lf cf
-
-    l e c são o tamanho linha e coluna da matriz, seguido pela própria matriz.
-    Os valores li e ci são linha e coluna do ponto de inicio do labirinto.
-    Os valores lf e cf são linha e coluna do ponto de fim do labirinto.
-
-O arquivo inputs/pmaze_10_10_in.txt possui:
-
-    10 10
-    ##########
-    #  ##    #
-    ## #  ## #
-    ## # ##  #
-    #  #  ####
-    ## ##    #
-    #   ### ##
-    ### ##   #
-    #      # #
-    ##########
-    1 1
-    4 1
-
-A resposta para esse labirinto está no inputs/p_maze_10_10_out.txt
-
-    10 10
-    ##########
-    #..##    #
-    ##.#  ## #
-    ##.# ##  #
-    #..#  ####
-    ## ##    #
-    #   ### ##
-    ### ##   #
-    #      # #
-    ##########
-
-Os ... são o caminho a ser percorrido entre os dois pontos.
-
-## Trabalho 1
-
-Você deve implementar tanto a solução de pilha para encontrar a saída do labirinto.
-Na pasta input você encontrará outros exemplos de entrada e saída.
-
-## Trabalho 2
+### Atividade 2
 
 Você deve implementar o algoritmo que gera um labirinto utilizando pilha.
 Vale uma pontuação especial se conseguir implementar sem as quinas.
+
+    funcao gerar_lab(matriz, pilha):
+		furar primeira posicao
+		empilhar a primeira posicao
+		enquanto pilha nao estiver vazia:
+		  pegar vizinhos do topo
+		  selecionar os vizinhos que sao furaveis
+		  se existirem vizinhos furaveis:
+			escolha um
+			fure
+			empilhe
+		  senão:
+			desempilhe
+
+### Atividade 3
+
+Você deve implementar a solução do labirinto utilizando pilha.
