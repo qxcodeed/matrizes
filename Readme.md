@@ -1,64 +1,113 @@
-## Atividades Possíveis para fazer em sala.
 
-- Mudar o queimada para ver o retorno da recursão de outra cor.
-- Construir os metodos de vizinhos e de embaralhamento.
-- Preencher uma imagem recursivamente aleatoriamente.
-- Preencher uma imagem recursivamente aleatoriamente mostrando o nivel da recursao.
-- Fazer o floodfill para preencher uma imagem.
-- Usar o floodfill para encontrar o menor caminho entre dois pontos.
-- Construir o labirinto usando pilha.
-- Construir o labirinto recursivamente.
-- Resolver o labirinto usando pilha.
-- Resolver o labirinto recursivamente.
-- Transformar um labirinto perfeito em arvore.
-- Transformar uma árvore em labirinto perfeito.
-- Fazer uma busca em árvore para gerar uma IA que jogue o jogo da velha.
+## Tipo Par
+- Métodos e Atributos
 
-## Funções Auxiliares
+```c++
+struct Par{
+    int l, c;// linha e coluna
 
-Crie uma funcao auxiliar que recebe um ponto e retorna os vizinhos desse ponto
+    //cria um par passando linha e coluna
+    Par(int l = 0, int c = 0);
 
-    //vizinhos nas 4 direcoes Left, Up, Right, Down
-    vector<Pos> gerar_vizinhos(Pos pos);
+    //retorna um novo par a partir da soma de dois pares
+    Par operator+(const Par& other);
 
-    //vizinhos nas 8 direções
-    vector<Pos> gerar_todos_vizinhos(Pos pos);
+    //compara dois pares
+    bool operator ==(const Par& other);
+};
+```
 
-Crie uma função auxiliar que embaralha um vetor de posicoes
+- Exemplo de uso:
 
-    void embaralhar(vector<Pos> vet);
+```c++
+Par p(5, 7);
+cout << p.l; //5
+cout << p.c; //7
+Par x = Par(1, 0) + Par(2, 0); //x = Par(3, 0)
+cout << (Par(1, 1) == (Par(1, 1)); //true
 
-## Atividades com labirinto.
+```
 
-### Atividade 1
+---
+## Classe Matriz
+- Métodos e atributos públicos
 
-Você deve implmentar a criação do labirinto utilizando recursão.
+```c++
+template<class T> 
+class matriz{
+    //cria matriz vazia
+    matriz();
 
-	funcao furar(posicao, matriz):
-		se posicao esta fora da matriz:
-			return
-		se posicao eh furavel:
-			fure
-			chame furar aleatoriamente para todos os vizinhos
+    //cria matriz a partir de outra
+    matriz(const matriz& mat);
 
-### Atividade 2
+    //cria matriz passando num de linhas colunas e valor default
+    matriz(int nl, int nc, T init);
 
-Você deve implementar o algoritmo que gera um labirinto utilizando pilha.
-Vale uma pontuação especial se conseguir implementar sem as quinas.
+    //obtem um elemento da matriz com para leitura e escrita
+    T& get(int l, int c);
 
-    funcao gerar_lab(matriz, pilha):
-		furar primeira posicao
-		empilhar a primeira posicao
-		enquanto pilha nao estiver vazia:
-		  pegar vizinhos do topo
-		  selecionar os vizinhos que sao furaveis
-		  se existirem vizinhos furaveis:
-			escolha um
-			fure
-			empilhe
-		  senão:
-			desempilhe
+    //retorna o numero de linhas
+    int sizeL();
 
-### Atividade 3
+    //retorna o numero de colunas
+    int sizeC();
 
-Você deve implementar a solução do labirinto utilizando pilha.
+    //retorna um par com o numero de linhas e colunas
+    Par size();
+
+    //retorna true se o ponto estiver dentro da matriz
+    bool is_inside(int l, int c);
+
+    //sobrecarga do get para Par
+    T& get(const Par& p);
+
+    //sobrecarga do is_inside usando par
+    bool is_inside(const Par& p);
+
+    //retorna true se o par está na matriz e possui esse valor
+    bool equals(const Par& pos, const T& value);
+
+    //retorna todas as posições da matriz
+    vector<Par> posicoes();
+};
+```
+
+- Exemplo de Uso.
+
+```c++
+//cria uma matriz de char de 10 linhas, 20 colunas
+//com todos os elementos sendo o char y
+matriz<char> matc(10, 20, 'y'); 
+
+matriz<char> mat2(matc);//cria mat2 copiando matc
+
+matc.get(0, 0) = 'k';//pega o elemento (0, 0) e põe k na posição
+
+cout << matc.sizeL(); //10
+
+cout << matc.isInside(Par(-1, 0)); //false
+
+cout << matc.equals(Par(1, 1), 'y'); //true
+```
+
+## Pintando
+
+```c++
+int nlin = 30;
+int ncol = 60;
+
+matchar<char> matc(nlin, ncol, 'k');//matriz preta
+matchar<int>  mati(nlin, ncol,   0);//matriz de zeros
+
+mat_draw(matc);//desenha a matriz de cores
+mat_focus(Par(3, 3), 'c');//faz uma bolinha ciano na posicao (3, 3)
+mat_draw(mati); //escreve os números
+ed_show(); //mostra na tela
+
+//observe que se voce fizer os numero antes das cores, as cores vao cobrir os numeros.
+
+//pinte os numeros se precisar. Marque os estados com bolinhas se precisar.
+
+ed_lock();//antes de terminar a main para evitar fechamento abrupto do player
+```
