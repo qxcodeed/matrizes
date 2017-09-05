@@ -1,4 +1,8 @@
 
+## Link das Atividades
+
+[![](https://qxcodeed.github.io/pages/matrizes/figura.png)](https://qxcodeed.github.io/pages/matrizes.html)
+
 ## Tipo Par
 - Métodos e Atributos
 
@@ -94,6 +98,11 @@ cout << matc.equals(Par(1, 1), 'y'); //true
 ## Pintando
 
 ```c++
+//includes
+#include "libs/ed_base.h"
+#include "libs/ed_mat.h"
+
+//main
 int nlin = 30;
 int ncol = 60;
 
