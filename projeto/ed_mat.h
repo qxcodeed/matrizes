@@ -3,8 +3,7 @@
   Esse arquivo contém as seguintes classes e funções.
   Par - Define um par linha e coluna, bem como suas operações
   matriz - Define uma classe template para matrizes
-  cmatriz - Define uma classe mínima para matrizes em c
-  matchar_ - funções para entrada e saída de matrizes de caracteres
+  matchar - funções para entrada e saída de matrizes de caracteres
   MatrizView - Classe para desenho de Matrizes
 
 */
@@ -144,41 +143,6 @@ using matchar = matriz<char>;
 
 #endif // MATRIZ_H
 
-#ifndef CMATRIZ_H
-#define CMATRIZ_H
-
-#include <iostream>
-
-struct cmatriz{
-    char *data;
-    int nl;
-    int nc;
-};
-
-cmatriz * cmat_create(int nl, int nc){
-    cmatriz * mat = new cmatriz;
-    mat->nl = nl;
-    mat->nc = nc;
-    mat->data = new char[nl * nc];
-    return mat;
-}
-
-void cmat_destroy(cmatriz * mat){
-    delete(mat->data);
-    delete(mat);
-}
-
-char* cmat_at(cmatriz * mat, int l, int c){
-    static char error = '\0';
-    if((l >= mat->nl) || (c >= mat->nc) || (l < 0) || (c < 0)){
-        std::cerr << "Posicao l ou c invalida na matriz.\n";
-        return &error;
-    }
-    return mat->data + (l * mat->nc) + c;
-
-}
-
-#endif // CMATRIZ_H
 
 #ifndef MATCHAR_OPERATIONS_H
 #define MATCHAR_OPERATIONS_H
@@ -458,7 +422,8 @@ public:
         float side = recalc_side(rt, nums.size());
         //print numbers
         sfText text;
-        text.setColor(sf::Color::Black);
+        text.setFillColor(sf::Color::Black);
+        text.setOutlineColor(sf::Color::Black);
         for(int c = 0; c < nums.sizeC(); c++){
             for(int l = 0; l < nums.sizeL(); l++){
                 string str = to_string(nums.get(l, c));

@@ -1,5 +1,5 @@
-#include "libs/ed_base.h"
-#include "libs/ed_mat.h"
+#include "ed_base.h"
+#include "ed_mat.h"
 
 #include <fstream>
 #include <iostream>
@@ -60,7 +60,7 @@ int main(){
     matchar mat(15, 20, 'g');
 
     //chama o metodo de desenho livre onde a cor primeira default eh branca
-    mat_paint_brush(mat, "wg");
+    mat_paint_brush(mat, "wgrbycm");
 
     Par par = mat_get_click(mat, "escolha uma arvore para queimar");
 

@@ -2,8 +2,8 @@
 /*
 Neste arquivo você encontrará todas as classes e métodos para o Player
 
-sfLine - Uma Classe para desenhar uma linha
-sfText - Uma classe de texto que carrega uma fonte padrão do ubuntu
+sfLine - Uma classe para desenhar uma linha
+sfText - Uma classe de texto que carrega uma fonte padrão do sistema
 MyBuffer - Uma classe para gerenciar o buffer de estados
 MyColors - Uma classe singleton para gerenciar o mapa de cores
 MyWindow - Uma RenderWindow singleton para o projeto
@@ -115,7 +115,8 @@ public:
     sfText(sf::Vector2f pos = sf::Vector2f(0, 0), std::string texto = "", sf::Color color = sf::Color::White, int size = 16)
     {
         this->setFont(*this->get_default_font());
-        this->setColor(color);
+        this->setOutlineColor(color);
+        this->setFillColor(color);
         this->setPosition(pos);
         this->setString(texto);
         this->setCharacterSize(size);
@@ -125,7 +126,7 @@ private:
 
 
     static sf::Font * get_default_font(){
-        const std::string _path = "../matrizes/libs/FreeMono.ttf";
+        const std::string _path = "../projeto/ed_font.ttf";
         static sf::Font font;
         static bool init = true;
         if(init){
@@ -135,8 +136,6 @@ private:
         }
         return &font;
     }
-
-
 };
 
 #endif // SFTEXT_H

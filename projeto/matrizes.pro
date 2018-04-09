@@ -11,6 +11,6 @@ CONFIG += c++11
 SOURCES += main.cpp
 
 HEADERS += \
-    libs/ed_base.h \
-    libs/ed_mat.h
+    ed_base.h \
+    ed_mat.h
 
