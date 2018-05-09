@@ -1,2 +1,2 @@
 all:
-	g++ -o main main.cpp ed_base.h ed_mat.h -lsfml-system -lsfml-graphics -lsfml-window
+	g++ -std=c++14 -o main main.cpp -lsfml-system -lsfml-graphics -lsfml-window
