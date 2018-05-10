@@ -6,11 +6,12 @@ CONFIG -= qt
 LIBS += -L/usr/lib -lsfml-graphics -lsfml-window -lsfml-system
 INCLUDEPATH += /usr/lib/
 
-CONFIG += c++11
+CONFIG += c++14
 
 SOURCES += main.cpp
 
 HEADERS += \
-    ed_base.h \
-    ed_mat.h
+    libs/ed_base.h \
+    libs/ed_mat.h \
+    prof.h
 

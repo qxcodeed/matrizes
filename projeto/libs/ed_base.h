@@ -13,6 +13,15 @@ MyPathMaker - Calcula linhas e posições, utilizado para desenhar
 */
 //#############################################################################
 
+#ifndef GLOBAIS_H
+#define GLOBAIS_H
+namespace ed{
+    int ALTURA = 700;
+    int LARGURA = 1000;
+    int BUFFER_SIZE = 200;
+}
+#endif
+
 #ifndef SFLINE_H
 #define SFLINE_H
 
@@ -126,7 +135,7 @@ private:
 
 
     static sf::Font * get_default_font(){
-        const std::string _path = "../projeto/ed_font.ttf";
+        const std::string _path = "../projeto/libs/ed_font.ttf";
         static sf::Font font;
         static bool init = true;
         if(init){
@@ -154,22 +163,16 @@ class MyBuffer
 private:
     uint _indice;
     uint _first;
-    uint _max_size; //maximo a frente ou atras
     typename std::list<T>::iterator _it;
     std::list<T> _list;
 public:
-    MyBuffer(uint max_size, T first){
+    MyBuffer(T first){
         //inserindo uma funcao vazia que nao faz nada so pra inicializar
         //os indices e o vetor
         _list.push_back(first);
         _it = _list.begin();
         _indice = 0;
         _first = 0;
-        _max_size = max_size;
-    }
-
-    void set_max_size(uint size){
-        _max_size = size;
     }
 
     bool exists(uint indice){
@@ -195,7 +198,7 @@ public:
 
     void push(const T& t){
         _list.push_back(t);
-        if(size() > (int)_max_size){
+        if(size() > (int)ed::BUFFER_SIZE){
             _list.pop_front();
             _first++;
             if(_indice > 0)
@@ -206,7 +209,7 @@ public:
     }
 
     bool is_full(){
-        return _list.size() >= _max_size;
+        return _list.size() >= ed::BUFFER_SIZE;
     }
 
     int size(){
@@ -356,7 +359,7 @@ private:
     //bool _isVisible{true};
 
     MyWindow():
-        sf::RenderWindow(sf::VideoMode(default_largura, default_altura), "QXCODE ED")
+        sf::RenderWindow(sf::VideoMode(ed::LARGURA, ed::ALTURA), "QXCODE ED")
     {
         this->setFramerateLimit(50);
         this->clear();
@@ -366,9 +369,6 @@ private:
     }
 
 public:
-
-    static const int default_altura = 700;
-    static const int default_largura = 1000;
 
     static MyWindow * instance(){
         static MyWindow static_window;
@@ -416,9 +416,6 @@ public:
 
 #include <SFML/Graphics.hpp>
 
-//#define my_player (MyPlayer::instance())
-//#define my_painel (MyPlayer::instance()->painel)
-
 class MyPlayer{
 private:
     sf::Clock _clock;
@@ -429,9 +426,9 @@ private:
 
 
     MyPlayer():
-        _buffer(100, sf::Texture())
+        _buffer(sf::Texture())
     {
-        painel.create(MyWindow::default_largura, MyWindow::default_altura);
+        painel.create(ed::LARGURA, ed::ALTURA);
     }
 
 public:
@@ -465,13 +462,8 @@ public:
         _waiting = false;
     }
 
-    //Altera o tamanho do buffer
-    virtual void set_buffer_size(uint size){
-        _buffer.set_max_size(size);
-    }
-
     //Funcao utilizada pelo pintor para salvar os estado
-    virtual void show(){
+    virtual void push(){
         MyWindow::instance()->setVisible(true);
 
         if(MyWindow::instance()->isOpen()){
@@ -692,8 +684,7 @@ private:
 #define TERMINAL_H
 
 void get_anything(){
-    char c;
-    cin >> noskipws >> c;
+    getchar();
     //cin.ignore(1000, '\n');
 }
 
@@ -711,35 +702,16 @@ void clear() {
 
 //BASE FUNCTIONS
 
-//salva o buffer e mostra o novo estado
-void ed_show(){
-    MyPlayer::instance()->show();
-}
+namespace ed {
 
 //trava o player para nao terminar a simulação
-void ed_lock(){
+void lock(){
     MyPlayer::instance()->wait();
 }
 
-
-//SETS
-//faz a janeja aparecer ou desaparecer
-void ed_set_visible(bool value){
-    MyWindow::instance()->setVisible(value);
-}
-
-//configura o tamanho default da janela
-void ed_set_size(int largura, int altura){
-    MyWindow::instance()->setSize(sf::Vector2u(largura, altura));
-}
-
-//seta o autoplayer pra true ou false
-void ed_set_autoplay(bool value){
-    MyPlayer::instance()->autoplay = value;
-}
-
 //adiciona ou muda uma cor do mapa de cores
-void ed_set_color(char color, int R, int G, int B){
+void set_color(char color, int R, int G, int B){
     my_colors->set(color, R, G, B);
+}
 }
 #endif // ED_H

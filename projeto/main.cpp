@@ -1,5 +1,5 @@
-#include "ed_base.h"
-#include "ed_mat.h"
+#include "libs/ed_base.h"
+#include "libs/ed_mat.h"
 
 #include <fstream>
 #include <iostream>
@@ -22,51 +22,65 @@ int ncolunas = 35;
 //w white
 //k black
 
-void queimar(matchar &mat, Par par){
-    //PONTOS DE PARADA
-    if(!mat.is_inside(par))//se estiver fora da matriz
-        return;
-    if(mat.get(par) != 'g')//se nao for arvore
-        return;
+template <class T>
+matriz<T> mat_create(int nl, int nc, T value){
+    return vector<vector<T>>(nl, vector<T>(nc, value));
+}
 
-    //ACAO
-    mat.get(par) = 'r';
+template<class T>
+bool mat_is_inside(matriz<T> mat, Pos pos){
+    int nl = mat.size();
+    int nc = mat[0].size();
+    if((pos.x < 0) || (pos.x >= nc))
+        return false;
+    if((pos.y < 0) || (pos.y >= nl))
+        return false;
+    return true;
+}
+
+void queimar(matriz<char> &mat, Pos pos){
+    //PONTOS DE PARADA
+    int l = pos.y;
+    int c = pos.x;
+    if(!mat_is_inside(mat, pos))//se estiver fora da matriz
+        return;
+    if(mat[l][c] != 'g')//se nao for arvore
+        return;
 
     //DESENHO
-    mat_draw(mat);//desenha a matriz
-    mat_focus(par, 'c');//faz uma bolinha em par
-    ed_show();//mostra na tela
+    ed::mat_show(mat, {pos}, "c");
+    mat[l][c] = 'r';
 
     //RECURSAO
-    queimar(mat, Par(par.l + 1, par.c    ));//down
-    queimar(mat, Par(par.l - 1, par.c    ));//up
-    queimar(mat, Par(par.l    , par.c + 1));//right
-    queimar(mat, Par(par.l    , par.c - 1));//left
+    queimar(mat, Pos(c + 1, l    ));//down
+    queimar(mat, Pos(c - 1, l    ));//up
+    queimar(mat, Pos(c    , l + 1));//right
+    queimar(mat, Pos(c    , l - 1));//left
 
     //ACAO APOS A RECURSAO
-    mat.get(par) = 'k';
+    mat[l][c] = 'k';
 
     //DESENHO
-    mat_draw(mat);//desenha a matriz
-    mat_focus(par, 'c');//faz uma bolinha em par
-    ed_show();//mostra na tela
+    ed::mat_show(mat, {pos}, "c");
 }
 
 
 int main(){
+    int nl = 20;
+    int nc = 40;
 
-    //cria uma matriz de caracteres de 15 linhas por 20 colunas, e preenche todos os elementos
-    //com 'y'
-    matchar mat(15, 20, 'g');
+    ed::LARGURA = 960;
+    ed::ALTURA = 660;
+    ed::BUFFER_SIZE = 100;
+    ed::LADO = ed::LARGURA / nc;
+
+    matriz<char> mat = mat_create(nl, nc, 'g');
 
     //chama o metodo de desenho livre onde a cor primeira default eh branca
-    mat_paint_brush(mat, "wgrbycm");
-
-    Par par = mat_get_click(mat, "escolha uma arvore para queimar");
-
-    queimar(mat, par);//chama a função recursiva
-
-    ed_lock();//impede que termine abruptamente
+    ed::mat_paint(mat, "wg");
+    Pos pos = ed::mat_click(mat, "escolha uma arvore para queimar");
+    queimar(mat, pos);//chama a função recursiva
+    ed::lock();//impede que termine abruptamente
 
     return 0;
 }
